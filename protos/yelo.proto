@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package yelo;
+
+option go_package = "github.com/gaursagarMT/starter/pb/yelo";
+
+// Yelp Clone Service
+// protoc --proto_path=. --go_out=plugins=grpc:$GOPATH/src/. yelo.proto
+service YeloService {
+  rpc AddNewPlace(AddNewPlaceRequest) returns (AddNewPlaceResponse);
+  rpc ListPlaces(ListPlacesRequest) returns (ListPlacesResponse);
+}
+
+message AddNewPlaceRequest {
+  string name = 1;
+  int32 place_type = 2;
+  Coordinates coordinates = 3;
+  string description = 4;
+}
+
+message Coordinates {
+  float latitude = 1;
+  float longitude = 2;
+}
+
+message AddNewPlaceResponse {
+  int64 place_id = 1 [jstype = JS_STRING];
+}
+
+message ListPlacesRequest {
+  string search_text = 1;
+  repeated int32 place_type = 2;
+  SortOrder sort_order = 3;
+  ListPlacesSortField sort_field = 4;
+  enum ListPlacesSortField {
+    PLACE_NAME = 0;
+    DISTANCE = 1;
+  }
+}
+
+message ListPlacesResponse {
+  repeated Place places = 1;
+  PaginationResponse page = 2;
+}
+
+message Place {
+  int64 id = 1 [jstype = JS_STRING];
+  string name = 2;
+  int32 place_type = 3;
+  Coordinates coordinates = 4;
+  string description = 5;
+}
+
+message PaginationRequest {
+    int32 from = 1;
+    int32 size = 2;
+}
+
+message PaginationResponse {
+  int32 total_count = 1;
+  int32 cursor = 2;
+  bool has_more = 3;
+}
+
+enum SortOrder {
+  ASC = 0;
+  DESC = 1;
+}

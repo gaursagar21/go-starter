@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package tutorial;
+
+option go_package = "github.com/gaursagarMT/starter/pb/users";
+
+service UsersService {
+  rpc RegisterUser(RegisterUserRequest) returns (RegisterUserResponse);
+}
+
+message RegisterUserRequest {
+
+}
+
+message RegisterUserResponse {
+
+}
+
+message User {
+  string username = 1;
+  string name = 2;
+  int64 id = 3;
+  string email = 4;
+}

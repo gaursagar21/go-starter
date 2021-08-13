@@ -1,0 +1,7 @@
+service_port: "5000"
+db:
+  mysql:
+    host: "localhost"
+    username: "reader"
+    password: "reader"
+    database: "yelo"
