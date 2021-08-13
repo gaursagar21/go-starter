@@ -4,16 +4,18 @@ import (
 	"context"
 	"fmt"
 	"github.com/gaursagarMT/starter/pb/yelo"
-	"github.com/gaursagarMT/starter/src/env"
+	"github.com/gaursagarMT/starter/src/storage"
 	"google.golang.org/grpc/metadata"
 )
 
-func GetYeloServer(appEnv *env.Environment) YeloServer {
-	return YeloServer{}
+func GetYeloServer(iStorage storage.IStorage) YeloServer {
+	return YeloServer{
+		storage: iStorage,
+	}
 }
 
 type YeloServer struct {
-	appEnv env.Environment
+	storage storage.IStorage
 }
 
 func (YeloServer) AddNewPlace(ctx context.Context, request *yelo.AddNewPlaceRequest) (*yelo.AddNewPlaceResponse, error) {

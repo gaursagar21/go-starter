@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/gaursagarMT/starter/pb/yelo"
 	"github.com/gaursagarMT/starter/src/config"
-	"github.com/gaursagarMT/starter/src/env"
 	"github.com/gaursagarMT/starter/src/storage"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"google.golang.org/grpc"
@@ -23,15 +22,11 @@ func StartGRPCServer(conf config.Config) error {
 		),
 	)
 	ctx := context.Background()
-	appEnv, err := env.Init(ctx, conf)
-	if err != nil {
-		panic(err)
-	}
 
 	//Storage, Dispatch, etc.
-	storage.GetMySQLStorage(ctx, conf.DatabaseConfig.MySQLConfig)
+	mysqlStorageImpl, _ := storage.GetMySQLStorage(ctx, conf.DatabaseConfig.MySQLConfig)
 
-	yeloServerImpl := GetYeloServer(&appEnv)
+	yeloServerImpl := GetYeloServer(mysqlStorageImpl)
 	yelo.RegisterYeloServiceServer(grpcServer, yeloServerImpl)
 
 	hostPort := fmt.Sprintf("0.0.0.0:%s", "5000")
